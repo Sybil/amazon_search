@@ -55,6 +55,9 @@ Rails.application.routes.draw do
   #     resources :products
   #   end
 
-  root to: "home#index"
+  resources :requests
+
+  root to: "requests#new"
+
 
 end

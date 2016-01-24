@@ -1,0 +1,10 @@
+<%= form_for @request, url: {action: "create"} do |f| %>
+  <p>
+    <%= f.label :keywords %><br>
+    <%= f.text_field :keywords %>
+  </p>
+ 
+  <p>
+    <%= f.submit %>
+  </p>
+<% end %> 

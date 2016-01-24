@@ -1,0 +1,13 @@
+<h1>Listing requests</h1>
+ 
+<table>
+  <tr>
+    <th>Keywords</th>
+  </tr>
+ 
+  <% @requests.each do |request| %>
+    <tr>
+      <td><%= request.keywords %></td>
+    </tr>
+  <% end %>
+</table>
