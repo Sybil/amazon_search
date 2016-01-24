@@ -3,6 +3,12 @@
   <%= @request.keywords %>
 </p>
 <p>
+<table>
 <strong>Results:</strong>
-<%= @response.to_h%>
+<% @responses.each do |response| %>
+    <tr>
+      <td><%= response %></td>
+    </tr>
+  <% end %>
+  </table>
 </p>

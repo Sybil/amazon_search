@@ -1,36 +1,37 @@
 class RequestsController < ApplicationController
 
-def new 
-  @request=Request.new
-end
-
-def create 
-  @request = Request.new(request_params)
- 
-  @request.save
-  redirect_to @request
-end
-
-def show
-  @request = Request.find(params[:id])
-  amazon = Vacuum.new
-amazon.configure(
-    aws_access_key_id: Rails.application.secrets.amazon_access_key,
-    aws_secret_access_key: Rails.application.secrets.amazon_secret_key,
-    associate_tag: 'Project'
-)
-  @response = amazon.item_search(
-    query: {
-      'Keywords' => @request.keywords,
-      'SearchIndex' => 'All'
-    }
-  )
-
-end
-
-def index
-  @requests = Request.all
-end
+  def new 
+    @request=Request.new
+  end
+  
+  def create 
+    @request = Request.new(request_params)
+   
+    @request.save
+    redirect_to @request
+  end
+  
+  def show
+    @request = Request.find(params[:id])
+    amazon = Vacuum.new
+    amazon.configure(
+      aws_access_key_id: Rails.application.secrets.amazon_access_key,
+      aws_secret_access_key: Rails.application.secrets.amazon_secret_key,
+      associate_tag: 'Project'
+    )
+    response = amazon.item_search(
+      query: {
+        'Keywords' => @request.keywords,
+        'SearchIndex' => 'All'
+      }
+    )
+    response = response.to_h["ItemSearchResponse"]["Items"]["Item"]
+    @responses = response.to_s.scan(/(?<="Title"=>").*?(?="}})/)
+  end
+  
+  def index
+    @requests = Request.all
+  end
 
 
 private
