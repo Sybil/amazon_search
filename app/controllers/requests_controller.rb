@@ -13,20 +13,8 @@ class RequestsController < ApplicationController
   
   def show
     @request = Request.find(params[:id])
-    amazon = Vacuum.new
-    amazon.configure(
-      aws_access_key_id: Rails.application.secrets.amazon_access_key,
-      aws_secret_access_key: Rails.application.secrets.amazon_secret_key,
-      associate_tag: 'Project'
-    )
-    response = amazon.item_search(
-      query: {
-        'Keywords' => @request.keywords,
-        'SearchIndex' => 'All'
-      }
-    )
-    response = response.to_h["ItemSearchResponse"]["Items"]["Item"]
-    @responses = response.to_s.scan(/(?<="Title"=>").*?(?="}})/)
+    @responses = AmazonService.new(@request.keywords).perform
+
   end
   
   def index
