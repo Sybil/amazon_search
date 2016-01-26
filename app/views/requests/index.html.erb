@@ -3,12 +3,14 @@
 <table>
   <tr>
     <th>ID</th>
+    <th>User</th>
     <th>Keywords</th>
   </tr>
  
   <% @requests.each do |request| %>
     <tr>
       <td><%= request.id %></td>
+      <td><%= request.user.email %></td>
       <td><%= request.keywords %></td>
     </tr>
   <% end %>

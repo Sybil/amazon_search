@@ -1,14 +1,16 @@
 class RequestsController < ApplicationController
 
+  before_action :authenticate_user!
+
   def new 
     @request=Request.new
   end
   
-  def create 
-    @request = Request.new(request_params)
-   
-    @request.save
-    redirect_to @request
+  def create
+    request = Request.new(request_params)
+    request.user_id = current_user.id
+    request.save
+    redirect_to request
   end
   
   def show
@@ -18,7 +20,7 @@ class RequestsController < ApplicationController
   end
   
   def index
-    @requests = Request.all
+    @requests = Request.includes(:user)
   end
 
 

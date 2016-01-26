@@ -1,5 +1,10 @@
 describe RequestsController do
 
+  before(:each) do
+    @request.env["devise.mapping"] = Devise.mappings[:user]
+    sign_in FactoryGirl.create(:user)
+  end
+
   describe "create" do
 
     let(:req) {Request.new(keywords: keywords)}
@@ -18,7 +23,7 @@ describe RequestsController do
         expect{subject}.to change{Request.count}.by(1)
       end
       it "redirects" do
-        expect(subject).to redirect_to(action: :show, id: assigns(:request).id)
+        expect(subject).to redirect_to(action: :show, id: Request.last.id)
       end
     end
   end
@@ -34,7 +39,7 @@ describe RequestsController do
         expect(response).to render_template("index")
       end
       it "returns all the requests" do
-        expect(Request).to receive(:all)
+        expect(Request).to receive(:includes)
         subject
       end
     end

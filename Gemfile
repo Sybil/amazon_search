@@ -62,5 +62,7 @@ group :test do
   gem 'timecop'
   gem 'webmock'
   gem 'vcr'
+  gem 'factory_girl_rails'
+  gem 'faker'
 end
 

@@ -102,3 +102,7 @@ VCR.configure do |config|
   config.filter_sensitive_data("<AMAZON_SECRET_KEY>") { Rails.application.secrets.amazon_secret_key }
 end
 
+RSpec.configure do |config|
+    config.include Devise::TestHelpers, :type => :controller
+end
+
