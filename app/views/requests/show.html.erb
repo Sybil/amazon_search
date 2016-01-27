@@ -1,6 +1,8 @@
 <p>
   <strong>Keywords:</strong>
   <%= @request.keywords %>
+  <strong>Less dumb AI than before:</strong>
+  <%= @request_analysis.intent %> : <%= @request_analysis.entities["search_query"].first.value %>
 </p>
 <p>
 <table>

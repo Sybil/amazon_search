@@ -15,7 +15,8 @@ class RequestsController < ApplicationController
   
   def show
     @request = Request.find(params[:id])
-    @responses = AmazonService.new(@request.keywords).perform
+    @request_analysis = NlpService.new(@request.keywords).perform
+    @responses = AmazonService.new(@request_analysis).perform
 
   end
   

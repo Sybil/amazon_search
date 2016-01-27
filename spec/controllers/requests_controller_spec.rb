@@ -1,7 +1,6 @@
 describe RequestsController do
 
   before(:each) do
-    @request.env["devise.mapping"] = Devise.mappings[:user]
     sign_in FactoryGirl.create(:user)
   end
 
@@ -16,7 +15,7 @@ describe RequestsController do
     context "when the request is empty" do
       it {should be_unprocessable_entity}
     end
-
+    
     let(:keywords) {'basic keywords'}
     context "when the request is a basic string" do
       it "creates a request" do

@@ -1,16 +1,21 @@
 describe AmazonService do
 
   around(:each) do | test |
-    Timecop.freeze(Time.parse('2016-01-25T06:30:58')) do
+    Timecop.freeze(Time.parse('2016-01-27T05:35:59')) do
       test.run
     end
   end
-
+   
+  let!(:request_analysis) { 
+    OpenStruct.new({
+      intent: 'Books', 
+      entities: {"search_query"=>[OpenStruct.new(value: 'shiatsu')]} 
+    }) 
+  }
+    
   describe "request_amazon_api" do
-
-    let!(:keywords) {'shiatsu'}
     subject do
-      AmazonService.new(keywords)
+      AmazonService.new(request_analysis)
     end
 
     context "when I request Amazon API with a basic keyword", vcr: {cassette_name: 'basic_keyword'} do
@@ -22,10 +27,9 @@ describe AmazonService do
 
   describe "parse_amazon_xml" do
 
-    let!(:keywords) {'shiatsu'}
-    let(:xml) {AmazonService.new(keywords).request_amazon_api}
+    let(:xml) {AmazonService.new(request_analysis).request_amazon_api}
     subject do
-      AmazonService.new(keywords)
+      AmazonService.new(request_analysis)
     end
 
     context "when I parse amazon xml", vcr: {cassette_name: 'basic_keyword'} do
@@ -36,15 +40,13 @@ describe AmazonService do
   end
 
   describe "perform" do
-    let!(:keywords) {'shiatsu'}
     subject do
-      AmazonService.new(keywords)
+      AmazonService.new(request_analysis)
     end
     
     context "when I ask amazon", vcr: {cassette_name: 'basic_keyword'} do
       it "gives good products" do
         expect(subject.perform.first).to include('Shiatsu')
-    
       end
     end
   end
